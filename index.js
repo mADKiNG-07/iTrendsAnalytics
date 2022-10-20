@@ -5,6 +5,7 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 // mongodb connection
+require('./startup/prod')(app);
 require('./startup/db')();
 
 // routes
