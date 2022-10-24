@@ -100,7 +100,7 @@ router.get('/all-users', (req, res) => {
         });
 });
 
-router.get('/all-users/:id', mAdmin, (req, res) => {
+router.get('/all-users/:id', (req, res) => {
     const id = req.params.id;
     User.findById(id)
         .then((result) => {

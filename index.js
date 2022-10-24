@@ -33,10 +33,10 @@ app.use(function (req, res, next) {
 
 
 // makes sure that the jwtPrivateKey is set correctly
-if (!config.get('jwtPrivateKey')) {
-    console.error("FATAL ERROR: jwtPrivateKey is not defined!");
-    process.exit(1);
-}
+// if (!config.get('jwtPrivateKey')) {
+//     console.error("FATAL ERROR: jwtPrivateKey is not defined!");
+//     process.exit(1);
+// }
 
 // routes
 app.use(express.json());
