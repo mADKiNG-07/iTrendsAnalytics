@@ -90,7 +90,7 @@ router.delete('/delete-user/:id', (req, res) => {
         })
 });
 
-router.get('/all-users', mAdmin, (req, res) => {
+router.get('/all-users', (req, res) => {
     User.find()
         .then((result) => {
             res.send(JSON.stringify(result, null, 3) + "\n")
