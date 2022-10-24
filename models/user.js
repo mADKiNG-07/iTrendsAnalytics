@@ -1,5 +1,5 @@
-// const config = require('config');
-// const jwt = require('jsonwebtoken');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 const Schema = mongoose.Schema;
@@ -39,7 +39,14 @@ const userSchema = new mongoose.Schema({
     accountType: {
         type: String,
     },
-    isAdmin: Boolean
+    isAdmin: {
+        type: Boolean,
+        required: false
+    },
+    isAnalyst: {
+        type: Boolean,
+        required: false
+    },
     // country
 }, { timestamps: true });
 
@@ -64,6 +71,7 @@ function validateUser(user) {
         country: Joi.string().required(),
         phoneNumber: Joi.string().required(),
         accountType: Joi.string(),
+        isAdmin: Joi.boolean()
     }
 
     return Joi.validate(user, schema);

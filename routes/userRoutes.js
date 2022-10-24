@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
 const { validate } = require('../models/user');
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
+const mAdmin = require('../middleware/mAdmin');
 
 
 // Use middleware to set the default Content - Type
@@ -20,19 +21,26 @@ router.post('/add-user', async (req, res) => {
         return;
     }
 
-    // checks if user already exists
+    // checks if user(email) already exists
     let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(404).send('User already registered!');
 
     user = new User(_.pick(req.body,
-        ["fName", "lName", "dob", "email", "password", "country", "phoneNumber", "accountType"]
+        ["fName", "lName", "dob", "email", "password", "country", "phoneNumber", "accountType", "isAdmin"]
     ));
 
+    // encrypt the password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
+    // editing the date format
     user.dob = new Date(user.dob).getTime() + 86400000;
+
+    // manually setting the account type to free
     user.accountType = "Free";
+
+    // manually setting the isAdmin type to false
+    // user.isAdmin = false;
 
     // removing this lines means you dont need the 
     // user to login before getting a token
@@ -41,6 +49,7 @@ router.post('/add-user', async (req, res) => {
 
     user.save()
         .then((result) => {
+            // set the token to the user's current token
             res.header('x-auth-token', token).send(JSON.stringify(result, null, 3) + "\n")
         })
         .catch((err) => {
@@ -81,7 +90,7 @@ router.delete('/delete-user/:id', (req, res) => {
         })
 });
 
-router.get('/all-users', (req, res) => {
+router.get('/all-users', mAdmin, (req, res) => {
     User.find()
         .then((result) => {
             res.send(JSON.stringify(result, null, 3) + "\n")
@@ -91,7 +100,7 @@ router.get('/all-users', (req, res) => {
         });
 });
 
-router.get('/all-users/:id', (req, res) => {
+router.get('/all-users/:id', mAdmin, (req, res) => {
     const id = req.params.id;
     User.findById(id)
         .then((result) => {
@@ -102,7 +111,7 @@ router.get('/all-users/:id', (req, res) => {
         })
 });
 
-router.get('/all-users/account-type/:accountType', (req, res) => {
+router.get('/all-users/account-type/:accountType', mAdmin, (req, res) => {
     const accountType = req.params.accountType;
     User.find({ accountType: accountType })
         .then((result) => {
@@ -113,7 +122,7 @@ router.get('/all-users/account-type/:accountType', (req, res) => {
         })
 });
 
-router.get('/all-users/country/:country', (req, res) => {
+router.get('/all-users/country/:country', mAdmin, (req, res) => {
     const country = req.params.country;
     User.find({ country: country })
         .then((result) => {

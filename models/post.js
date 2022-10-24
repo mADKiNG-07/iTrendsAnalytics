@@ -2,19 +2,31 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const postSchema = Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    body: {
-        type: String,
-        required: true
-    },
     imgUrl: {
         type: String,
         required: true
     },
-    timeFrame: {
+    cryptoPair: {
+        type: String,
+        required: true
+    },
+    typeOfTrade: {
+        type: String,
+        required: true
+    },
+    tradingPref: {
+        type: String,
+        required: true
+    },
+    desc: {
+        type: String,
+        required: true
+    },
+    rec: {
+        type: String,
+        required: true
+    },
+    outlook: {
         type: String,
         required: true
     },

@@ -1,9 +1,12 @@
+const config = require('config');
 const express = require('express');
+const postRoutes = require('./routes/postRoutes');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
+// heroku config
 require('./startup/prod')(app);
 
 // mongodb connection
@@ -28,9 +31,18 @@ app.use(function (req, res, next) {
     next();
 });
 
+
+// makes sure that the jwtPrivateKey is set correctly
+if (!config.get('jwtPrivateKey')) {
+    console.error("FATAL ERROR: jwtPrivateKey is not defined!");
+    process.exit(1);
+}
+
 // routes
 app.use(express.json());
 app.use('/users', userRoutes);
+app.use('/posts', postRoutes);
+
 
 // port
 const port = process.env.PORT || 3000;
