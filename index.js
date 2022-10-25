@@ -12,6 +12,8 @@ require('./startup/prod')(app);
 // mongodb connection
 require('./startup/db')();
 
+
+
 // Add headers
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
@@ -40,6 +42,7 @@ app.use(function (req, res, next) {
 
 // routes
 app.use(express.json());
+app.use(express.static("public/img"));
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
 
