@@ -1,6 +1,6 @@
 const config = require('config');
 const express = require('express');
-const postRoutes = require('./routes/postRoutes');
+// const postRoutes = require('./routes/postRoutes');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 
@@ -42,9 +42,9 @@ app.use(function (req, res, next) {
 
 // routes
 app.use(express.json());
-app.use(express.static("public/img"));
+// app.use(express.static("public/img"));
 app.use('/users', userRoutes);
-app.use('/posts', postRoutes);
+// app.use('/posts', postRoutes);
 
 
 // port
