@@ -11,6 +11,8 @@ router.use(function (req, res, next) {
     next();
 });
 
+router.use(express.static("public/img"));
+
 // set storage
 var Storage = multer.diskStorage({
     destination: function (req, file, callback) {
