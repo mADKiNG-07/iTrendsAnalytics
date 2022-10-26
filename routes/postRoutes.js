@@ -11,7 +11,6 @@ router.use(function (req, res, next) {
     next();
 });
 
-
 // set storage
 var Storage = multer.diskStorage({
     destination: function (req, file, callback) {

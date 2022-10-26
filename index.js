@@ -12,8 +12,6 @@ require('./startup/prod')(app);
 // mongodb connection
 require('./startup/db')();
 
-
-
 // Add headers
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
