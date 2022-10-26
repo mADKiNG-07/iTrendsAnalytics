@@ -9,26 +9,26 @@ const postSchema = Schema({
         type: String,
         required: true
     },
-    typeOfTrade: {
-        type: String,
-        required: true
-    },
-    tradingPref: {
-        type: String,
-        required: true
-    },
-    desc: {
-        type: String,
-        required: true
-    },
-    rec: {
-        type: String,
-        required: true
-    },
-    outlook: {
-        type: String,
-        required: true
-    },
+    // typeOfTrade: {
+    //     type: String,
+    //     required: true
+    // },
+    // tradingPref: {
+    //     type: String,
+    //     required: true
+    // },
+    // desc: {
+    //     type: String,
+    //     required: true
+    // },
+    // rec: {
+    //     type: String,
+    //     required: true
+    // },
+    // outlook: {
+    //     type: String,
+    //     required: true
+    // },
 }, { timestamps: true });
 
 const Post = mongoose.model('Post', postSchema);
