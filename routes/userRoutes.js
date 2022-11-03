@@ -5,6 +5,7 @@ const _ = require('lodash');
 const { validate } = require('../models/user');
 const bcrypt = require('bcrypt');
 const mAdmin = require('../middleware/mAdmin');
+const { Router } = require('express');
 
 
 // Use middleware to set the default Content - Type
@@ -51,6 +52,47 @@ router.post('/add-user', async (req, res) => {
         .then((result) => {
             // set the token to the user's current token
             res.header('x-auth-token', token).send(JSON.stringify(result, null, 3) + "\n")
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+});
+
+router.put('/makeAnalyst/:id', (req, res) => {
+    const id = req.params.id;
+    User.findByIdAndUpdate(id,
+        {
+            isAnalyst: true
+        },
+        { new: true })
+        .then((result) => {
+            res.send(JSON.stringify(result, null, 3) + "\n")
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+});
+
+router.put('/removeAnalyst/:id', (req, res) => {
+    const id = req.params.id;
+    User.findByIdAndUpdate(id,
+        {
+            isAnalyst: false
+        },
+        { new: true })
+        .then((result) => {
+            res.send(JSON.stringify(result, null, 3) + "\n")
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+});
+
+router.get('/viewAnalyst', (req, res) => {
+    const isAnalyst = true;
+    User.find({ isAnalyst: isAnalyst })
+        .then((result) => {
+            res.send(JSON.stringify(result, null, 3) + "\n")
         })
         .catch((err) => {
             console.log(err)

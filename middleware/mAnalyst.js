@@ -15,7 +15,7 @@ module.exports = function (req, res, next) {
         req.user = decoded;
 
         // checks if the user is authorized(isAnalyst)
-        if (!req.user.isAdmin) return res.status(404)
+        if (!req.user.isAnalyst) return res.status(404)
             .send("Access Denied");
 
         next();

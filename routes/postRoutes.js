@@ -54,7 +54,7 @@ router.post('/add-post', (req, res) => {
 router.get('/all-posts', (req, res) => {
     Post.find()
         .then((result) => {
-            res.send(JSON.stringify(result, null, 3) + "\n")
+            res.render(JSON.stringify(result, null, 3) + "\n")
         })
         .catch((err) => {
             console.log(err)
