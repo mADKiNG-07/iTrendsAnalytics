@@ -74,13 +74,8 @@ router.post('/add-post', upload.single("file"), (req, res) => {
 // });
 
 router.get('/all-posts', async (req, res) => {
-    await Post.find()
-        .then((result) => {
-            res.render(JSON.stringify(result, null, 3) + "\n")
-        })
-        .catch((err) => {
-            console.log(err)
-        });
+    const allData = await Post.find()
+    res.json(allData)
 });
 
 router.get('/all-posts/:id', mAuth, (req, res) => {
