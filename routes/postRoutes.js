@@ -15,7 +15,7 @@ router.use(function (req, res, next) {
 // set storage
 var Storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, "public/img/");
+        callback(null, 'uploads');
     },
     filename: function (req, file, callback) {
         callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
@@ -29,7 +29,7 @@ var upload = multer({
 router.post('/add-post', upload.single("file"), (req, res) => {
     const post = new Post({
         imgUrl: {
-            data: fs.readFileSync("public/img/" + req.file.filename),
+            data: fs.readFileSync('uploads/' + req.file.filename),
             contentType: "image/png"
         },
         cryptoPair: req.body.cryptoPair,
