@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const postSchema = Schema({
     imgUrl: {
-        type: String,
+        data: Buffer,
+        contentType: String
     },
     cryptoPair: {
         type: String,
