@@ -13,39 +13,39 @@ router.use(function (req, res, next) {
 });
 
 // set storage
-var Storage = multer.diskStorage({
-    destination: function (req, file, callback) {
-        callback(null, 'uploads');
-    },
-    filename: function (req, file, callback) {
-        callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
-    },
-});
+// var Storage = multer.diskStorage({
+//     destination: function (req, file, callback) {
+//         callback(null, 'uploads');
+//     },
+//     filename: function (req, file, callback) {
+//         callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
+//     },
+// });
 
-var upload = multer({
-    storage: Storage,
-}) //Field name and max count
+// var upload = multer({
+//     storage: Storage,
+// }) //Field name and max count
 
-router.post('/add-post', upload.single("file"), (req, res) => {
-    const post = new Post({
-        imgUrl: {
-            data: fs.readFileSync('uploads/' + req.file.filename),
-            contentType: "image/png"
-        },
-        cryptoPair: req.body.cryptoPair,
-        typeOfTrade: req.body.typeOfTrade,
-        tradingPref: req.body.tradingPref,
-        desc: req.body.desc,
-        rec: req.body.rec,
-        outlook: req.body.outlook,
-    });
+// router.post('/add-post', upload.single("file"), (req, res) => {
+//     const post = new Post({
+//         imgUrl: {
+//             data: fs.readFileSync('uploads/' + req.file.filename),
+//             contentType: "image/png"
+//         },
+//         cryptoPair: req.body.cryptoPair,
+//         typeOfTrade: req.body.typeOfTrade,
+//         tradingPref: req.body.tradingPref,
+//         desc: req.body.desc,
+//         rec: req.body.rec,
+//         outlook: req.body.outlook,
+//     });
 
-    post.save()
-        .then((result) => {
-            res.send(result)
-        })
-        .catch((err) => { console.log("Error saving image") });
-});
+//     post.save()
+//         .then((result) => {
+//             res.send(result)
+//         })
+//         .catch((err) => { console.log("Error saving image") });
+// });
 
 // router.post('/add-post', (req, res) => {
 
@@ -73,9 +73,32 @@ router.post('/add-post', upload.single("file"), (req, res) => {
 
 // });
 
-router.get('/all-posts', async (req, res) => {
-    const allData = await Post.find()
-    res.json(allData)
+router.post('/add-post', (req, res) => {
+    const post = new Post({
+        imgUrl: req.body.imgUrl,
+        cryptoPair: req.body.cryptoPair,
+        typeOfTrade: req.body.typeOfTrade,
+        tradingPref: req.body.tradingPref,
+        desc: req.body.desc,
+        rec: req.body.rec,
+        outlook: req.body.outlook,
+    });
+
+    post.save()
+        .then((result) => {
+            res.send(result)
+        })
+        .catch((err) => { console.log("Error saving data") });
+});
+
+router.get('/all-posts', (req, res) => {
+    Post.find()
+        .then((result) => {
+            res.send(JSON.stringify(result, null, 3) + "\n")
+        })
+        .catch((err) => {
+            console.log(err)
+        })
 });
 
 router.get('/all-posts/:id', mAuth, (req, res) => {
