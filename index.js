@@ -3,6 +3,7 @@ const express = require('express');
 const postRoutes = require('./routes/postRoutes');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use(express.json());
 app.use(express.static("public/img"));
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
+app.use('/auth', authRoutes);
 
 
 // port

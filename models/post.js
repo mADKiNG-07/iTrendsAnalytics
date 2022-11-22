@@ -30,6 +30,9 @@ const postSchema = Schema({
         type: String,
         required: true
     },
+    analystEmail: {
+        type: String,
+    }
 }, { timestamps: true });
 
 const Post = mongoose.model('Post', postSchema);
