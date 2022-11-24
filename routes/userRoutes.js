@@ -100,6 +100,19 @@ router.get('/viewAnalyst', (req, res) => {
         })
 });
 
+router.get('/viewAnalyst/:email', (req, res) => {
+    const isAnalyst = true;
+    const email = req.params.email;
+
+    User.find({ isAnalyst: isAnalyst, email: email })
+        .then((result) => {
+            res.send(JSON.stringify(result, null, 3) + "\n")
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+});
+
 router.put('/update-user/:id', (req, res) => {
     const id = req.params.id;
     User.findByIdAndUpdate(id,
