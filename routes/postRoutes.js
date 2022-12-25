@@ -1,5 +1,4 @@
 const Post = require('../models/post');
-const mAuth = require('../middleware/mAuth');
 const mAdmin = require('../middleware/mAdmin');
 const mAnalyst = require('../middleware/mAnalyst');
 const express = require('express');
@@ -15,73 +14,12 @@ router.use(function (req, res, next) {
     next();
 });
 
-// set storage
-// var Storage = multer.diskStorage({
-//     destination: function (req, file, callback) {
-//         callback(null, 'uploads');
-//     },
-//     filename: function (req, file, callback) {
-//         callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
-//     },
-// });
-
-// var upload = multer({
-//     storage: Storage,
-// }) //Field name and max count
-
-// router.post('/add-post', upload.single("file"), (req, res) => {
-//     const post = new Post({
-//         imgUrl: {
-//             data: fs.readFileSync('uploads/' + req.file.filename),
-//             contentType: "image/png"
-//         },
-//         cryptoPair: req.body.cryptoPair,
-//         typeOfTrade: req.body.typeOfTrade,
-//         tradingPref: req.body.tradingPref,
-//         desc: req.body.desc,
-//         rec: req.body.rec,
-//         outlook: req.body.outlook,
-//     });
-
-//     post.save()
-//         .then((result) => {
-//             res.send(result)
-//         })
-//         .catch((err) => { console.log("Error saving image") });
-// });
-
-// router.post('/add-post', (req, res) => {
-
-//     upload(req, res, function (err) {
-//         if (err) {
-//             console.log(err);
-//             return res.end("Something went wrong");
-//         } else {
-//             const post = new Post(_.pick(req.body, "imgUrl", "cryptoPair", "typeOfTrade", "tradingPref", "desc", "rec", "outlook"));
-
-//             console.log(req.file.path);
-//             var imageName = req.file.filename;
-
-//             post.imgUrl = imageName;
-
-//             post.save()
-//                 .then((result) => {
-//                     res.send(JSON.stringify(result, null, 3) + "\n")
-//                 })
-//                 .catch((err) => {
-//                     console.log(err)
-//                 })
-//         }
-//     });
-
-// });
-
-router.post('/add-post', mAnalyst, (req, res) => {
+router.post('/add-post', (req, res) => {
     const token = req.header('x-auth-token');
 
     // checks if the token was provided
     if (!token) return res.status(401)
-        .send("Access Denied! No Token Provided!");
+    send("Access Denied! No Token Provided!");
 
     const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
     req.user = decoded;
@@ -115,7 +53,7 @@ router.get('/all-posts', (req, res) => {
         })
 });
 
-router.get('/all-posts/:id', mAuth, (req, res) => {
+router.get('/all-posts/:id', (req, res) => {
     const id = req.params.id;
     Post.findById(id)
         .then((result) => {
@@ -126,7 +64,7 @@ router.get('/all-posts/:id', mAuth, (req, res) => {
         })
 });
 
-router.get('/all-posts/time-frame/:timeFrame', mAuth, (req, res) => {
+router.get('/all-posts/time-frame/:timeFrame', (req, res) => {
     const timeframe = req.params.timeFrame;
     Post.find({ timeFrame: timeframe })
         .then((result) => {
@@ -149,7 +87,7 @@ router.get('/all-posts/analyst/:analystEmail', (req, res) => {
 });
 
 
-router.put('/update-blog/:id', [mAuth, mAdmin], (req, res) => {
+router.put('/update-blog/:id', [mAdmin], (req, res) => {
     const id = req.params.id;
     Blog.findByIdAndUpdate(id,
         {
@@ -168,7 +106,7 @@ router.put('/update-blog/:id', [mAuth, mAdmin], (req, res) => {
 
 });
 
-router.delete('/delete-post/:id', [mAuth, mAdmin], (req, res) => {
+router.delete('/delete-post/:id', [mAdmin], (req, res) => {
     const id = req.params.id;
     Post.findByIdAndDelete(id)
         .then((result) => {

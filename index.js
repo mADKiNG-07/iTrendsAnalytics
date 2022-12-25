@@ -4,6 +4,10 @@ const postRoutes = require('./routes/postRoutes');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/auth');
+const refreshToken = require('./routes/refreshToken');
+const mAuth = require('./middleware/mAuth');
+const cookieParser = require('cookie-parser');
+
 
 const app = express();
 
@@ -32,6 +36,8 @@ app.use(function (req, res, next) {
     next();
 });
 
+// middleware for cookies
+app.use(cookieParser());
 
 // makes sure that the jwtPrivateKey is set correctly
 if (!config.get('jwtPrivateKey')) {
@@ -41,10 +47,12 @@ if (!config.get('jwtPrivateKey')) {
 
 // routes
 app.use(express.json());
-app.use(express.static("public/img"));
 app.use('/users', userRoutes);
-app.use('/posts', postRoutes);
 app.use('/auth', authRoutes);
+app.use('/refreshToken', refreshToken);
+
+app.use(mAuth);
+app.use('/posts', postRoutes);
 
 
 // port

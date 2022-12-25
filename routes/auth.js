@@ -29,6 +29,13 @@ router.post('/', async (req, res) => {
 
     const token = user.generateAuthToken();
 
+    const refreshToken = user.generateRefreshToken();
+    user.refreshToken = refreshToken;
+    const result = await user.save();
+    console.log(result);
+
+    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 48 * 60 * 60 * 1000 });
+
     res.send(token);
 });
 

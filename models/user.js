@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         required: false
     },
+    refreshToken: {
+        type: String,
+        required: false
+    },
     // country
 }, { timestamps: true });
 
@@ -57,7 +61,25 @@ userSchema.methods.generateAuthToken = function () {
         isAdmin: this.isAdmin,
         isAnalyst: this.isAnalyst
     },
-        config.get('jwtPrivateKey'));
+        config.get('jwtPrivateKey'),
+        {
+            expiresIn: '1h'
+        });
+
+    return token;
+}
+
+userSchema.methods.generateRefreshToken = function () {
+    const token = jwt.sign({
+        _id: this._id,
+        email: this.email,
+        isAdmin: this.isAdmin,
+        isAnalyst: this.isAnalyst
+    },
+        config.get('jwtPrivateKey'),
+        {
+            expiresIn: '2d'
+        });
 
     return token;
 }
