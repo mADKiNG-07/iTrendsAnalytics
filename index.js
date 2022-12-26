@@ -8,7 +8,7 @@ const refreshToken = require('./routes/refreshToken');
 const mAuth = require('./middleware/mAuth');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const corsOptions = require('./config/corsOptions');
+const corsOptions = require('./config/corsOption');
 const credentials = require('./middleware/credentials');
 
 
