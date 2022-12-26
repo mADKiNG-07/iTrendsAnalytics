@@ -8,6 +8,8 @@ const refreshToken = require('./routes/refreshToken');
 const mAuth = require('./middleware/mAuth');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
+const credentials = require('./middleware/credentials');
 
 
 const app = express();
@@ -18,13 +20,11 @@ require('./startup/prod')(app);
 // mongodb connection
 require('./startup/db')();
 
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true,            //access-control-allow-credentials:true
-    optionSuccessStatus: 200
-}
+app.use(credentials);
 
 app.use(cors(corsOptions));
+
+app.use(express.urlencoded({ extended: false }));
 
 // Add headers
 // app.use(function (req, res, next) {
