@@ -27,7 +27,7 @@ router.post('/add-user', async (req, res) => {
     if (user) return res.status(404).send('User already registered!');
 
     user = new User(_.pick(req.body,
-        ["fName", "lName", "dob", "email", "password", "country", "phoneNumber", "accountType", "isAdmin", "isAnalyst"]
+        ["fName", "lName", "dob", "email", "password", "country", "phoneNumber", "accountType"]
     ));
 
     // encrypt the password
@@ -39,7 +39,7 @@ router.post('/add-user', async (req, res) => {
 
     // manually setting the account type to free
     user.accountType = "Free";
-    user.isAnalyst = true;
+    // user.isAnalyst = true;
 
     // manually setting the isAdmin type to false
     // user.isAdmin = false;

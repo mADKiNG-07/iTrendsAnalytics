@@ -8,7 +8,10 @@ module.exports = function (req, res, next) {
 
     try {
         const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
-        req.user = decoded;
+        req.user = decoded.email;
+        req.roles = Object.values(decoded.roles).filter(Boolean);
+        console.log(req.user);
+        console.log(req.roles);
 
         next();
     }

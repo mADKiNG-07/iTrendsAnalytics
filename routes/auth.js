@@ -27,16 +27,19 @@ router.post('/', async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).send('Invalid email or password!')
 
+    const roles = Object.values(user.roles).filter(Boolean);
+
     const token = user.generateAuthToken();
 
     const refreshToken = user.generateRefreshToken();
     user.refreshToken = refreshToken;
     const result = await user.save();
-    console.log(result);
+    // console.log(result);
+    // console.log(roles);
 
-    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 48 * 60 * 60 * 1000 });
+    res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 48 * 60 * 60 * 1000 });
 
-    res.send(token);
+    res.json({ roles, token });
 });
 
 function validate(req) {

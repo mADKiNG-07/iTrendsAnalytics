@@ -8,13 +8,15 @@ const _ = require('lodash');
 const multer = require("multer");
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const ROLES_LIST = require('../config/roles_list');
+const verifyRoles = require('../middleware/verifyRoles');
 
 router.use(function (req, res, next) {
     res.header('Content-Type', 'application/json');
     next();
 });
 
-router.post('/add-post', (req, res) => {
+router.post('/add-post', verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Analyst), (req, res) => {
     const token = req.header('x-auth-token');
 
     // checks if the token was provided
@@ -87,7 +89,7 @@ router.get('/all-posts/analyst/:analystEmail', (req, res) => {
 });
 
 
-router.put('/update-blog/:id', [mAdmin], (req, res) => {
+router.put('/update-blog/:id', verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Analyst), (req, res) => {
     const id = req.params.id;
     Blog.findByIdAndUpdate(id,
         {
@@ -106,7 +108,7 @@ router.put('/update-blog/:id', [mAdmin], (req, res) => {
 
 });
 
-router.delete('/delete-post/:id', [mAdmin], (req, res) => {
+router.delete('/delete-post/:id', verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Analyst), (req, res) => {
     const id = req.params.id;
     Post.findByIdAndDelete(id)
         .then((result) => {

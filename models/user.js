@@ -39,13 +39,13 @@ const userSchema = new mongoose.Schema({
     accountType: {
         type: String,
     },
-    isAdmin: {
-        type: Boolean,
-        required: false
-    },
-    isAnalyst: {
-        type: Boolean,
-        required: false
+    roles: {
+        User: {
+            type: Number,
+            default: 5732
+        },
+        Editor: Number,
+        Admin: Number
     },
     refreshToken: {
         type: String,
@@ -58,8 +58,7 @@ userSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({
         _id: this._id,
         email: this.email,
-        isAdmin: this.isAdmin,
-        isAnalyst: this.isAnalyst
+        roles: this.roles
     },
         config.get('jwtPrivateKey'),
         {
