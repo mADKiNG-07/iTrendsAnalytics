@@ -1,3 +1,4 @@
+require('dotenv').config();
 const config = require('config');
 const express = require('express');
 const postRoutes = require('./routes/postRoutes');
@@ -45,8 +46,7 @@ app.use(express.urlencoded({ extended: false }));
 //     next();
 // });
 
-// middleware for cookies
-app.use(cookieParser());
+
 
 // makes sure that the jwtPrivateKey is set correctly
 if (!config.get('jwtPrivateKey')) {
@@ -56,6 +56,10 @@ if (!config.get('jwtPrivateKey')) {
 
 // routes
 app.use(express.json());
+
+// middleware for cookies
+app.use(cookieParser());
+
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/refreshToken', refreshToken);

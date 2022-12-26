@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
     // console.log(result);
     // console.log(roles);
 
-    res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 48 * 60 * 60 * 1000 });
+    res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 48 * 60 * 60 * 1000 });
 
     res.json({ roles, token });
 });
