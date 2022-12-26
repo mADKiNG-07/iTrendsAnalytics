@@ -45,7 +45,7 @@ router.post('/add-post', verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Analyst), (req
         .catch((err) => { console.log("Error saving data") });
 });
 
-router.get('/all-posts', (req, res) => {
+router.get('/all-posts', verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Analyst, ROLES_LIST.User), (req, res) => {
     Post.find()
         .then((result) => {
             res.send(JSON.stringify(result, null, 3) + "\n")
@@ -55,7 +55,7 @@ router.get('/all-posts', (req, res) => {
         })
 });
 
-router.get('/all-posts/:id', (req, res) => {
+router.get('/all-posts/:id', verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Analyst, ROLES_LIST.User), (req, res) => {
     const id = req.params.id;
     Post.findById(id)
         .then((result) => {
@@ -66,7 +66,7 @@ router.get('/all-posts/:id', (req, res) => {
         })
 });
 
-router.get('/all-posts/time-frame/:timeFrame', (req, res) => {
+router.get('/all-posts/time-frame/:timeFrame', verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Analyst, ROLES_LIST.User), (req, res) => {
     const timeframe = req.params.timeFrame;
     Post.find({ timeFrame: timeframe })
         .then((result) => {

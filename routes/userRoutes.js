@@ -89,7 +89,7 @@ router.put('/removeAnalyst/:id', (req, res) => {
         });
 });
 
-router.get('/viewAnalyst', (req, res) => {
+router.get('/viewAnalyst', verifyRoles(ROLES_LIST.Admin), (req, res) => {
     const isAnalyst = true;
     User.find({ isAnalyst: isAnalyst })
         .then((result) => {
