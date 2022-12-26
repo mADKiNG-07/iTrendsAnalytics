@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const refreshToken = require('./routes/refreshToken');
 const mAuth = require('./middleware/mAuth');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 
 const app = express();
@@ -17,24 +18,32 @@ require('./startup/prod')(app);
 // mongodb connection
 require('./startup/db')();
 
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
+
 // Add headers
-app.use(function (req, res, next) {
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+// app.use(function (req, res, next) {
+//     // Set to true if you need the website to include cookies in the requests sent
+//     // to the API (e.g. in case you use sessions)
+//     res.setHeader('Access-Control-Allow-Credentials', true);
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', '*');
+//     // Website you wish to allow to connect
+//     res.setHeader('Access-Control-Allow-Origin', '*');
 
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//     // Request methods you wish to allow
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type,Accept, Authortization');
+//     // Request headers you wish to allow
+//     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type,Accept, Authortization');
 
-    // Pass to next layer of middleware
-    next();
-});
+//     // Pass to next layer of middleware
+//     next();
+// });
 
 // middleware for cookies
 app.use(cookieParser());
