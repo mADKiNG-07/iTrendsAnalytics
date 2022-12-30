@@ -21,7 +21,7 @@ router.post('/add-post', verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Analyst), (req
 
     // checks if the token was provided
     if (!token) return res.status(401)
-    send("Access Denied! No Token Provided!");
+        .send("Access Denied! No Token Provided!");
 
     const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
     req.user = decoded;
