@@ -27,26 +27,6 @@ app.use(cors(corsOptions));
 
 app.use(express.urlencoded({ extended: false }));
 
-// Add headers
-// app.use(function (req, res, next) {
-//     // Set to true if you need the website to include cookies in the requests sent
-//     // to the API (e.g. in case you use sessions)
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-
-//     // Website you wish to allow to connect
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-
-//     // Request methods you wish to allow
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-//     // Request headers you wish to allow
-//     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type,Accept, Authortization');
-
-//     // Pass to next layer of middleware
-//     next();
-// });
-
-
 
 // makes sure that the jwtPrivateKey is set correctly
 if (!config.get('jwtPrivateKey')) {
@@ -54,12 +34,13 @@ if (!config.get('jwtPrivateKey')) {
     process.exit(1);
 }
 
-// routes
+
 app.use(express.json());
 
 // middleware for cookies
 app.use(cookieParser());
 
+// routes
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/refreshToken', refreshToken);

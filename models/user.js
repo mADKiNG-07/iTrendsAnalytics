@@ -5,16 +5,8 @@ const Joi = require('joi');
 const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
-    fName: {
+    username: {
         type: String,
-        required: true
-    },
-    lName: {
-        type: String,
-        required: true
-    },
-    dob: {
-        type: Date,
         required: true
     },
     email: {
@@ -28,11 +20,11 @@ const userSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 1024
     },
-    country: {
-        type: String,
+    dob: {
+        type: Date,
         required: true
     },
-    phoneNumber: {
+    country: {
         type: String,
         required: true
     },
@@ -51,12 +43,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    // country
 }, { timestamps: true });
 
 userSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({
         _id: this._id,
+        // username = this.username
         email: this.email,
         roles: this.roles
     },
@@ -72,6 +64,7 @@ userSchema.methods.generateRefreshToken = function () {
     const token = jwt.sign({
         _id: this._id,
         email: this.email,
+        // username = this.username
         isAdmin: this.isAdmin,
         isAnalyst: this.isAnalyst
     },
@@ -85,15 +78,12 @@ userSchema.methods.generateRefreshToken = function () {
 
 function validateUser(user) {
     const schema = {
-        fName: Joi.string().min(5).max(50).required(),
-        lName: Joi.string().min(5).max(50).required(),
-        dob: Joi.date().required(),
+        username: Joi.string().min(5).max(50).required(),
         email: Joi.string().min(5).max(255).required(),
         password: Joi.string().min(5).max(255).required(),
+        dob: Joi.date().required(),
         country: Joi.string().required(),
-        phoneNumber: Joi.string().required(),
         accountType: Joi.string(),
-        isAdmin: Joi.boolean()
     }
 
     return Joi.validate(user, schema);

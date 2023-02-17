@@ -27,7 +27,7 @@ router.post('/add-user', async (req, res) => {
     if (user) return res.status(404).send('User already registered!');
 
     user = new User(_.pick(req.body,
-        ["fName", "lName", "dob", "email", "password", "country", "phoneNumber", "accountType"]
+        ["username", "email", "password", "dob", "country", "accountType"]
     ));
 
     // encrypt the password
@@ -117,10 +117,9 @@ router.put('/update-user/:id', (req, res) => {
     const id = req.params.id;
     User.findByIdAndUpdate(id,
         {
-            fName: req.body.fName,
-            lName: req.body.lName,
-            dob: new Date(req.body.dob).getTime() + 86400000,
+            username: req.body.username,
             email: req.body.email,
+            dob: new Date(req.body.dob).getTime() + 86400000,
             country: req.body.country,
             phoneNumber: req.body.phoneNumber,
             accountType: req.body.accountType,
