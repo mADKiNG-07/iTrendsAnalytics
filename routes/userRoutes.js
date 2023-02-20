@@ -181,7 +181,7 @@ router.get('/all-users', (req, res) => {
         });
 });
 
-router.get('/all-users/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const id = req.params.id;
     User.findById(id)
         .then((result) => {
@@ -192,9 +192,20 @@ router.get('/all-users/:id', (req, res) => {
         })
 });
 
-router.get('/all-users/:username', (req, res) => {
+router.get('/username/:username', (req, res) => {
     const username = req.params.username;
     User.findOne({ username: username })
+        .then((result) => {
+            res.send(JSON.stringify(result, null, 3) + "\n")
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+});
+
+router.get('/email/:email', (req, res) => {
+    const email = req.params.email;
+    User.findOne({ email: email })
         .then((result) => {
             res.send(JSON.stringify(result, null, 3) + "\n")
         })
