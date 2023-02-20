@@ -192,9 +192,9 @@ router.get('/all-users/:id', (req, res) => {
         })
 });
 
-router.get('/all-users/:email', (req, res) => {
-    const email = req.params.email;
-    User.find({ email: email })
+router.get('/all-users/username', (req, res) => {
+    const username = req.params.username;
+    User.find({ username: username })
         .then((result) => {
             res.send(JSON.stringify(result, null, 3) + "\n")
         })
