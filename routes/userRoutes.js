@@ -194,7 +194,7 @@ router.get('/all-users/:id', (req, res) => {
 
 router.get('/all-users/:email', (req, res) => {
     const email = req.params.email;
-    User.findById(email)
+    User.find({ email: email })
         .then((result) => {
             res.send(JSON.stringify(result, null, 3) + "\n")
         })
