@@ -40,6 +40,8 @@ router.post('/', async (req, res) => {
     res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 48 * 60 * 60 * 1000 });
 
     res.json({ roles, token });
+
+    res.send(result);
 });
 
 function validate(req) {
