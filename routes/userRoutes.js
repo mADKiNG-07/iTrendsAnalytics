@@ -194,7 +194,7 @@ router.get('/all-users/:id', (req, res) => {
 
 router.get('/all-users/username', (req, res) => {
     const username = req.params.username;
-    User.find({ username: username })
+    User.findOne({ username: username })
         .then((result) => {
             res.send(JSON.stringify(result, null, 3) + "\n")
         })
