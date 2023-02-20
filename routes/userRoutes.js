@@ -6,6 +6,9 @@ const { validate } = require('../models/user');
 const bcrypt = require('bcrypt');
 const mAdmin = require('../middleware/mAdmin');
 const { Router } = require('express');
+const nodemailer = require("nodemailer");
+require('dotenv').config();
+
 
 
 // Use middleware to set the default Content - Type
@@ -48,6 +51,29 @@ router.post('/add-user', async (req, res) => {
     // user to login before getting a token
     // (the user will get a token to access routes)
     const token = user.generateAuthToken();
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'infinitetrendsanalytics@gmail.com',
+            pass: process.env.MAILER_PASSWORD
+        }
+    });
+
+    var mailOptions = {
+        from: 'infinitetrendsanalytics@gmail.com',
+        to: user.email,
+        subject: 'Sending Email using Node.js',
+        text: 'That was easy!'
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
 
     user.save()
         .then((result) => {
@@ -158,6 +184,17 @@ router.get('/all-users', (req, res) => {
 router.get('/all-users/:id', (req, res) => {
     const id = req.params.id;
     User.findById(id)
+        .then((result) => {
+            res.send(JSON.stringify(result, null, 3) + "\n")
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+});
+
+router.get('/all-users/:email', (req, res) => {
+    const email = req.params.email;
+    User.findById(email)
         .then((result) => {
             res.send(JSON.stringify(result, null, 3) + "\n")
         })
